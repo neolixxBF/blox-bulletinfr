@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Balance Log – Summer PvP Patch 001 – BloxNews FR</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blox Fruits News">
+    <meta property="og:title" content="Summer PvP Patch 001 – Notes d'équilibrage">
+    <meta property="og:description" content="La plus grande mise à jour d'équilibrage PvP de tous les temps : plus de 100 changements sur les Fruits, Fighting Styles, Swords, Guns, Races et l'Instinct.">
+    <meta property="og:image" content="https://bloxnewsfr.github.io/BloxNews-FR/pvp1/img/PvpChanges.png">
+    <meta property="og:url" content="https://bloxnewsfr.github.io/BloxNews-FR/pvp1/bulletin-pvp1.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="../shared/favicon.png">
+    <link rel="shortcut icon" href="../shared/bf_logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    <style>
+        @font-face { font-family: 'LuckiestGuy Regular'; src: url('../fonts/LuckiestGuy-Regular.ttf') format('truetype'); }
+
+        :root {
+            --color-text: #333132;
+            --color-border: #ebebeb;
+            --color-primary: #ffda00;
+            --color-secondary: #175ec2;
+            --color-buff: #16a34a;
+            --color-buff-bg: #dcfce7;
+            --color-nerf: #dc2626;
+            --color-nerf-bg: #fee2e2;
+            --color-adj: #d97706;
+            --color-adj-bg: #fef3c7;
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Inter', sans-serif; color: var(--color-text); background-color: #f5f6fa; line-height: 1.6; }
+
+        /* ===== SITE BACKGROUND ===== */
+        .site-background { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; }
+        .site-background img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @media (max-width: 768px) { .site-background { display: none; } }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 55px; position: sticky; top: 0; z-index: 1000; height: 72px;
+            background-color: rgba(255,255,255,0.08);
+            backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .site-header__logo { position: absolute; left: 55px; }
+        .site-header__logo img { height: 42px; width: auto; display: block; }
+        .site-nav { display: flex; gap: 8px; padding: 0; margin: 0; list-style: none; font-weight: 900; }
+        .site-nav a { color: var(--color-text); text-decoration: none; font-weight: 900; font-size: 17px; text-transform: uppercase; font-family: 'LuckiestGuy Regular', cursive; padding: 8px 16px; border-radius: 10px; transition: background 0.2s, color 0.2s; }
+        .site-nav a:hover { background: var(--color-primary); color: #000; }
+        .site-header__icons { display: flex; gap: 12px; color: var(--color-text); cursor: pointer; align-items: center; position: absolute; right: 55px; }
+        .site-header__icons span { padding: 8px; border-radius: 10px; transition: background 0.2s; }
+        .site-header__icons span:hover { background: rgba(0,0,0,0.06); }
+        .mobile-menu-btn { display: none; }
+
+        @media (max-width: 1024px) {
+            .site-header { padding: 0 28px; }
+            .site-header__logo { left: 28px; }
+            .site-header__logo img { height: 36px; }
+            .site-header__icons { right: 28px; gap: 8px; }
+            .site-header__icons .dark-mode-toggle, .site-header__icons span[onclick="openSearch()"] { font-size: 22px; }
+            .site-header__icons .discord-login-btn { display: none; }
+            .site-header__icons .discord-user-pill { display: none; }
+            .site-nav a { font-size: 15px; padding: 6px 14px; }
+        }
+        @media (max-width: 768px) {
+            .site-header { padding: 0 16px; height: 60px; }
+            .site-header__logo { left: 16px; }
+            .site-header__logo img { height: 32px; }
+            .site-header__icons { right: 16px; gap: 6px; }
+            .site-header__icons .discord-login-btn { display: none; }
+            .site-header__icons .discord-user-pill { display: none; }
+            .site-nav { display: none; }
+            .mobile-menu-btn { display: block; }
+        }
+
+        /* ===== MOBILE NAV ===== */
+        .mobile-nav-backdrop {
+            position: fixed; inset: 0; z-index: 9990;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+            display: none; opacity: 0; transition: opacity 0.35s;
+        }
+        .mobile-nav-backdrop.is-open { display: block; opacity: 1; }
+        .mobile-nav-dropdown {
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; right: -85vw; bottom: 0;
+            width: min(82vw, 320px);
+            background: rgba(10,10,20,0.96);
+            backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+            box-shadow: -12px 0 50px rgba(0,0,0,0.5);
+            z-index: 9991; transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+        }
+        .mobile-nav-dropdown.is-open { right: 0; }
+        .mnav-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .mnav-header__title { font-family: 'LuckiestGuy Regular', cursive; font-size: 20px; color: #fff; text-transform: uppercase; }
+        .mnav-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .mnav-links { display: flex; flex-direction: column; gap: 6px; padding: 14px; }
+        .mobile-nav-dropdown a.mnav-link { display: flex; align-items: center; gap: 14px; text-decoration: none; color: rgba(255,255,255,0.85); font-weight: 800; font-size: 15px; padding: 13px 16px; border-radius: 14px; transition: background 0.2s; }
+        .mnav-link__icon { font-size: 22px; color: rgba(255,255,255,0.4); }
+        .mobile-nav-dropdown a.mnav-link:hover { background: rgba(255,255,255,0.06); }
+
+        /* ===== BULLETIN CONTAINER ===== */
+        .bulletin-container {
+            max-width: 860px;
+            margin: 32px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* ===== BLUE BANNER ===== */
+        .blue-banner {
+            background: #175ec2;
+            color: #fff;
+            font-family: 'LuckiestGuy Regular', cursive;
+            font-size: 32px;
+            text-align: center;
+            padding: 14px 40px;
+            letter-spacing: 1px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* ===== HERO IMAGE ===== */
+        .hero-image-wrapper {
+            width: 100%;
+            background: #dde3ed;
+            border: 1px solid var(--color-border);
+            border-top: none;
+            aspect-ratio: 16/6;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .hero-image-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-img-placeholder {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; color: #94a3b8; font-size: 14px; font-weight: 600;
+        }
+        .hero-img-placeholder span { font-size: 40px; opacity: 0.4; }
+
+        /* ===== JOURNAL HEADER ===== */
+        .publish-date { text-align: center; font-size: 13px; color: #888; font-weight: 600; margin: 16px 0 4px; }
+        .journal-header { text-align: center; margin-bottom: 16px; }
+        .journal-title { font-size: 38px; font-weight: 900; color: #111; margin: 0 0 6px; }
+        .journal-subtitle { font-size: 16px; color: #666; font-style: italic; margin: 0 0 8px; }
+        .journal-meta { font-size: 13px; font-weight: 700; color: #555; }
+        .dashed-line { border: none; border-top: 2px dashed #ccc; margin: 18px 0; }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .intro-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 12px; color: #0f172a; }
+        .intro-box .intro-img { width: 100%; height: auto; display: block; border-radius: 10px; margin: 0 0 16px; }
+        .intro-box p { font-size: 15px; line-height: 1.75; color: #374151; margin: 0 0 12px; }
+        .intro-box p:last-child { margin-bottom: 0; }
+
+        /* ===== OVERVIEW BOX ===== */
+        .overview-box {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .ov-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 4px; }
+        .ov-title { font-size: 26px; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+        .ov-desc { font-size: 14px; color: #64748b; margin-bottom: 18px; }
+        .ov-divider { border: none; border-top: 2px dashed #e2e8f0; margin-bottom: 18px; }
+
+        .ov-section { margin-bottom: 22px; }
+        .ov-section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .ov-section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding-left: 12px; border-left: 4px solid; }
+        .ov-section-title.buff { color: var(--color-buff); border-color: var(--color-buff); }
+        .ov-section-title.nerf { color: var(--color-nerf); border-color: var(--color-nerf); }
+        .ov-section-title.adj { color: var(--color-adj); border-color: var(--color-adj); }
+        .ov-count { font-size: 12px; font-weight: 700; border-radius: 100px; padding: 3px 11px; }
+        .ov-count.buff { background: var(--color-buff-bg); color: var(--color-buff); }
+        .ov-count.nerf { background: var(--color-nerf-bg); color: var(--color-nerf); }
+        .ov-count.adj { background: var(--color-adj-bg); color: var(--color-adj); }
+
+        .ov-icons { display: flex; flex-wrap: wrap; gap: 10px; }
+        .ov-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 68px; text-align: center; font-size: 11px; font-weight: 600; color: #475569; }
+        .ov-icon-slot {
+            width: 52px; height: 52px; border-radius: 10px;
+            border: 2px solid; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #f8fafc;
+        }
+        .ov-icon-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .ov-icon-slot.buff { border-color: var(--color-buff); background: var(--color-buff-bg); }
+        .ov-icon-slot.nerf { border-color: var(--color-nerf); background: var(--color-nerf-bg); }
+        .ov-icon-slot.adj { border-color: var(--color-adj); background: var(--color-adj-bg); }
+
+        /* ===== JUMP BAR ===== */
+        .jump-bar {
+            background: #fff; border: 1px solid var(--color-border);
+            border-radius: 10px; padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .jump-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-right: 4px; }
+        .jump-btn {
+            padding: 6px 14px; border-radius: 7px;
+            border: 1.5px solid var(--color-border);
+            background: #f8fafc; font-size: 13px; font-weight: 700;
+            color: #374151; cursor: pointer; text-decoration: none;
+            transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .jump-btn:hover { background: var(--color-secondary); border-color: var(--color-secondary); color: #fff; }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: #fff; border: 1px solid var(--color-border);
+            border-radius: 10px; padding: 14px 20px; margin-bottom: 8px;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky; top: 88px; z-index: 500;
+        }
+        .filter-search {
+            flex: 1 1 240px; display: flex; align-items: center; gap: 8px;
+            background: #f8fafc; border: 1.5px solid var(--color-border);
+            border-radius: 8px; padding: 8px 12px; min-width: 0;
+        }
+        .filter-search .material-symbols-outlined { font-size: 20px; color: #94a3b8; flex-shrink: 0; }
+        .filter-search input {
+            flex: 1; min-width: 0; border: none; outline: none; font-size: 14px;
+            font-family: 'Inter', sans-serif; background: transparent; color: var(--color-text);
+        }
+        .filter-search input::placeholder { color: #94a3b8; }
+        .filter-clear-btn {
+            border: none; background: transparent; cursor: pointer;
+            color: #94a3b8; font-size: 15px; padding: 2px 4px; line-height: 1;
+            display: none; flex-shrink: 0;
+        }
+        .filter-clear-btn:hover { color: #334155; }
+        .filter-clear-btn.is-visible { display: block; }
+        .filter-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+        .filter-btn {
+            padding: 8px 16px; border-radius: 100px; border: 1.5px solid var(--color-border);
+            background: #f8fafc; font-size: 13px; font-weight: 700;
+            color: #374151; cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { background: #eef1f6; }
+        .filter-btn.active { background: #1e293b; border-color: #1e293b; color: #fff; }
+        .filter-btn.active.buff { background: var(--color-buff); border-color: var(--color-buff); color: #fff; }
+        .filter-btn.active.nerf { background: var(--color-nerf); border-color: var(--color-nerf); color: #fff; }
+        .filter-btn.active.adj { background: var(--color-adj); border-color: var(--color-adj); color: #fff; }
+        .filter-empty {
+            display: none; text-align: center; color: #94a3b8;
+            padding: 30px 0 10px; font-size: 14px; font-weight: 600;
+        }
+        .filter-empty.is-visible { display: block; }
+        .item-card.is-hidden { display: none; }
+        .item-card.is-collapsed-card { display: none; }
+        .cat-header.is-hidden { display: none; }
+
+        /* ===== CAT HEADER ===== */
+        .cat-header {
+            display: flex; align-items: center; gap: 12px;
+            background: #1e293b; border-radius: 10px 10px 0 0;
+            padding: 14px 20px; margin-top: 32px;
+            cursor: pointer; user-select: none;
+            transition: background 0.2s, border-radius 0.2s;
+        }
+        .cat-header:hover { background: #243247; }
+        .cat-header.is-collapsed { border-radius: 10px; }
+        .cat-header-title { font-size: 20px; font-weight: 900; color: #fff; flex: 1; }
+        .cat-toggle {
+            color: rgba(255,255,255,0.6); font-size: 24px;
+            transition: transform 0.25s; flex-shrink: 0;
+        }
+        .cat-header.is-collapsed .cat-toggle { transform: rotate(-90deg); }
+        .cat-icon-slot {
+            width: 40px; height: 40px; border-radius: 8px;
+            background: rgba(255,255,255,0.12);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0;
+        }
+        .cat-icon-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ===== ITEM CARD ===== */
+        .item-card {
+            background: #fff;
+            border: 1px solid var(--color-border); border-top: none;
+            padding: 22px 24px;
+        }
+        .item-card + .item-card { border-top: 1px solid var(--color-border); }
+        .item-card.last { border-radius: 0 0 10px 10px; border-bottom: 1px solid var(--color-border); margin-bottom: 0; }
+
+        .item-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .item-icon-slot {
+            width: 50px; height: 50px; border-radius: 10px;
+            border: 2.5px solid; overflow: hidden; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: #f8fafc;
+        }
+        .item-icon-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .item-icon-slot.buff { border-color: var(--color-buff); background: var(--color-buff-bg); }
+        .item-icon-slot.nerf { border-color: var(--color-nerf); background: var(--color-nerf-bg); }
+        .item-icon-slot.adj { border-color: var(--color-adj); background: var(--color-adj-bg); }
+
+        .item-name { font-size: 21px; font-weight: 900; color: #0f172a; flex: 1; }
+        .item-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; font-weight: 700; border-radius: 100px;
+            padding: 4px 12px; text-transform: uppercase; letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .item-badge.buff { background: var(--color-buff-bg); color: var(--color-buff); }
+        .item-badge.nerf { background: var(--color-nerf-bg); color: var(--color-nerf); }
+        .item-badge.adj { background: var(--color-adj-bg); color: var(--color-adj); }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+        .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #94a3b8; margin: 14px 0 8px; }
+        .section-label:first-child { margin-top: 0; }
+        .section-sep { border: none; border-top: 1.5px dashed #e2e8f0; margin: 12px 0; }
+
+        .change-list { display: flex; flex-direction: column; }
+        .change-row { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1f5f9; }
+        .change-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .change-row:first-child { padding-top: 0; }
+
+        .key-badge {
+            flex-shrink: 0; min-width: 52px; padding: 3px 7px;
+            background: #f8fafc; border: 1.5px solid #cbd5e1;
+            border-radius: 6px; font-size: 11px; font-weight: 700;
+            text-align: center; color: #334155; white-space: nowrap;
+        }
+        .change-desc { font-size: 14px; line-height: 1.6; color: #374151; padding-top: 2px; }
+        .change-desc strong { font-weight: 700; color: #0f172a; }
+
+        /* ===== BUG FIX ===== */
+        .bugfix-box {
+            background: #fff; border: 1px solid var(--color-border);
+            border-radius: 10px; padding: 24px 28px;
+            margin-top: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .bugfix-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .bugfix-icon {
+            width: 50px; height: 50px; border-radius: 10px;
+            border: 2.5px solid var(--color-adj); overflow: hidden; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--color-adj-bg);
+        }
+        .bugfix-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .bugfix-title { font-size: 20px; font-weight: 900; color: #0f172a; }
+        .bugfix-divider { border: none; border-top: 1.5px dashed #e2e8f0; margin-bottom: 14px; }
+
+        /* ===== FOOTER NOTE ===== */
+        .footer-note { text-align: center; font-style: italic; font-size: 14px; color: #94a3b8; padding: 28px 0 0; }
+
+        /* ===== BACK BUTTON ===== */
+        .back-button-container { text-align: center; margin-top: 36px; }
+        .back-button {
+            display: inline-block; padding: 13px 32px;
+            background: linear-gradient(135deg, #ffda00, #ffc200);
+            color: #000; font-weight: 800; font-size: 15px;
+            border-radius: 100px; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .back-button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,218,0,0.4); }
+
+        /* ===== SOCIAL SHARE ===== */
+        .social-share { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 28px 0 0; }
+        .social-share a { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.2s; }
+        .social-share a.td { background: #5865F2; color: #fff; }
+        .social-share a.tt { background: #000; color: #fff; }
+        .social-share a.ty { background: #FF0000; color: #fff; }
+        .social-share a:hover { opacity: 0.85; transform: translateY(-1px); }
+        .social-share img { width: 18px; height: 18px; object-fit: contain; }
+
+        /* ===== SITE FOOTER ===== */
+        .site-footer { background: #0d1117; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-wrap: wrap; gap: 40px; padding: 48px 55px; justify-content: space-between; }
+        .footer-col h3 { font-family: 'LuckiestGuy Regular', cursive; font-size: 16px; color: #fff; margin-bottom: 12px; text-transform: uppercase; }
+        .footer-col p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+        .footer-col ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: var(--color-primary); }
+        .footer-community-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .footer-community-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.2s; }
+        .footer-community-links a:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+        @media (max-width: 600px) {
+            .blue-banner { font-size: 22px; padding: 12px 20px; }
+            .journal-title { font-size: 26px; }
+            .intro-box, .overview-box, .bugfix-box { padding: 18px 16px; }
+            .item-card { padding: 16px 14px; }
+            .ov-item { width: 58px; }
+            .ov-icon-slot { width: 44px; height: 44px; }
+            .site-footer { padding: 32px 20px; gap: 28px; }
+            .cat-header { padding: 12px 14px; }
+        }
+
+        /* ── RECHERCHE ── */
+        .search-overlay {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, rgba(5,5,20,0.93), rgba(10,8,25,0.88));
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            z-index: 99999; display: flex; flex-direction: column;
+            align-items: center; padding-top: 120px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .search-overlay.is-active { opacity: 1; pointer-events: auto; }
+        .search-container {
+            width: 92%; max-width: 640px;
+            transform: translateY(-24px) scale(0.94);
+            transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .search-overlay.is-active .search-container { transform: translateY(0) scale(1); }
+        .search-bar {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 4px 4px 4px 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+            transition: box-shadow 0.25s, border-color 0.25s;
+        }
+        .search-bar:focus-within {
+            box-shadow: 0 8px 48px rgba(255,255,255,0.04), 0 0 0 1px rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .search-bar input {
+            flex: 1; border: none; outline: none; font-size: 17px;
+            font-family: 'Inter', sans-serif; color: #fff;
+            background: transparent; padding: 14px 0; letter-spacing: 0.1px;
+        }
+        .search-bar input::placeholder { color: rgba(255,255,255,0.3); }
+        .search-go-btn {
+            padding: 10px 22px; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, #444, #222);
+            color: #fff; font-weight: 800; font-size: 13px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease; letter-spacing: 0.3px;
+            text-transform: uppercase; flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .search-go-btn:hover { transform: scale(1.04); background: linear-gradient(135deg, #555, #333); box-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+        .search-nav-btn {
+            width: 36px; height: 36px; border-radius: 10px; border: none;
+            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); cursor: pointer;
+            font-size: 16px; display: flex; align-items: center;
+            justify-content: center; transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .search-nav-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+        .search-nav-btn:disabled { opacity: 0.2; cursor: default; }
+        .search-close-btn {
+            width: 36px; height: 36px; border-radius: 10px; border: none;
+            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); cursor: pointer;
+            font-size: 20px; display: flex; align-items: center;
+            justify-content: center; transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .search-close-btn:hover { background: rgba(255,50,50,0.15); color: #ff6b6b; }
+        .search-stats {
+            color: rgba(255,255,255,0.35); font-size: 14px; margin-top: 12px;
+            font-family: 'Inter', sans-serif; font-weight: 500;
+            letter-spacing: 0.3px; text-align: center;
+        }
+        mark.search-hl {
+            background: linear-gradient(135deg, #fce83a, #ffd700);
+            color: #000; border-radius: 3px; padding: 1px 4px;
+            box-shadow: 0 1px 6px rgba(252,232,58,0.4);
+            transition: all 0.2s;
+        }
+        mark.search-hl.active {
+            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            color: #fff; border-radius: 3px; padding: 1px 4px;
+            box-shadow: 0 1px 10px rgba(255,107,53,0.5);
+        }
+        @media (max-width: 768px) {
+            .search-overlay { padding-top: 80px; }
+            .search-bar { gap: 4px; padding: 4px 4px 4px 14px; }
+            .search-bar input { font-size: 15px; padding: 10px 0; }
+            .search-go-btn { padding: 8px 12px; font-size: 11px; }
+            .search-nav-btn { width: 44px; height: 44px; font-size: 16px; }
+            .search-close-btn { width: 44px; height: 44px; font-size: 18px; }
+        }
+
+        /* ── DISCORD AUTH ── */
+        .discord-login-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 14px; border-radius: 20px; border: none; cursor: pointer;
+            background: #5865F2; color: #fff;
+            font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif;
+            transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: 0 2px 12px rgba(88,101,242,0.35);
+            white-space: nowrap; user-select: none;
+        }
+        .discord-login-btn:hover {
+            background: #4752c4; transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(88,101,242,0.5);
+        }
+        .discord-login-btn:active { transform: translateY(0); }
+        .discord-login-btn svg { flex-shrink: 0; }
+        .discord-user-pill {
+            display: none; align-items: center; gap: 8px;
+            padding: 4px 12px 4px 4px; border-radius: 20px; cursor: pointer;
+            background: rgba(88,101,242,0.12);
+            border: 1px solid rgba(88,101,242,0.25);
+            transition: all 0.2s; user-select: none; position: relative;
+        }
+        .discord-user-pill:hover {
+            background: rgba(88,101,242,0.2);
+            border-color: rgba(88,101,242,0.4);
+        }
+        .discord-user-pill.is-visible { display: flex; }
+        .discord-avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            object-fit: cover; flex-shrink: 0;
+            border: 2px solid rgba(88,101,242,0.5);
+            background: rgba(88,101,242,0.2);
+        }
+        .discord-username {
+            font-size: 13px; font-weight: 700; color: var(--color-text);
+            max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .discord-chevron {
+            font-size: 10px; color: rgba(88,101,242,0.7); margin-left: 2px;
+            transition: transform 0.2s;
+        }
+        .discord-user-pill.dropdown-open .discord-chevron { transform: rotate(180deg); }
+        .discord-dropdown {
+            position: absolute; top: calc(100% + 10px); right: 0;
+            background: rgba(12,12,20,0.98); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            width: 220px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(88,101,242,0.1);
+            opacity: 0; pointer-events: none; transform: translateY(-6px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 9999;
+        }
+        .discord-user-pill.dropdown-open .discord-dropdown {
+            opacity: 1; pointer-events: all; transform: translateY(0);
+        }
+        .discord-dropdown-header {
+            padding: 14px 16px; background: rgba(88,101,242,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .discord-dropdown-avatar {
+            width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(88,101,242,0.5); flex-shrink: 0;
+        }
+        .discord-dropdown-name {
+            font-size: 13px; font-weight: 700; color: #fff; line-height: 1.2;
+        }
+        .discord-dropdown-tag {
+            font-size: 11px; color: rgba(88,101,242,0.8); margin-top: 1px;
+        }
+        .discord-dropdown-body { padding: 8px; }
+        .discord-dropdown-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 10px; border-radius: 8px; cursor: pointer;
+            color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 600;
+            transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .discord-dropdown-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .discord-dropdown-item span { font-size: 15px; }
+        .discord-skeleton {
+            width: 120px; height: 30px; border-radius: 20px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%);
+            background-size: 200% 100%; animation: skeletonShimmer 1.4s infinite;
+            display: none;
+        }
+        .discord-skeleton.is-visible { display: block; }
+        @keyframes skeletonShimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        /* ── DARK MODE ── */
+        body.dark-mode { background-color: #0b0b12; color: #ddd; }
+        body.dark-mode .site-background { opacity: 0.35; }
+        body.dark-mode .site-header { background-color: rgba(10,10,18,0.75); border-bottom-color: rgba(255,255,255,0.06); }
+        body.dark-mode .site-header__logo img { filter: brightness(0) invert(1); }
+        body.dark-mode .site-nav a { color: #ccc; }
+        body.dark-mode .site-nav a:hover { background: var(--color-primary); color: #000; }
+        body.dark-mode .site-header__icons { color: #ccc; }
+        body.dark-mode .site-header__icons span:hover { background: rgba(255,255,255,0.06); }
+        body.dark-mode .mobile-nav-dropdown { background: rgba(15,15,25,0.98); border-color: rgba(255,255,255,0.06); }
+        body.dark-mode .publish-date { color: #999; }
+        body.dark-mode .journal-title { color: #eee; }
+        body.dark-mode .journal-subtitle { color: #bbb; }
+        body.dark-mode .journal-meta { color: #aaa; }
+        body.dark-mode .dashed-line { border-top-color: #2a2a35; }
+        body.dark-mode .hero-image-wrapper { background: #16161f; border-color: #2a2a35; }
+        body.dark-mode .intro-box,
+        body.dark-mode .overview-box,
+        body.dark-mode .jump-bar,
+        body.dark-mode .item-card,
+        body.dark-mode .bugfix-box { background: #13131e; border-color: #2a2a35; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        body.dark-mode .intro-box h2,
+        body.dark-mode .ov-title,
+        body.dark-mode .item-name,
+        body.dark-mode .bugfix-title { color: #eee; }
+        body.dark-mode .intro-box p,
+        body.dark-mode .change-desc { color: #ccc; }
+        body.dark-mode .change-desc strong { color: #fff; }
+        body.dark-mode .ov-desc { color: #8b93ab; }
+        body.dark-mode .ov-item { color: #9aa2bd; }
+        body.dark-mode .ov-icon-slot,
+        body.dark-mode .item-icon-slot { background: #1c1c29; }
+        body.dark-mode .jump-label { color: #8b93ab; }
+        body.dark-mode .jump-btn { background: #1c1c29; border-color: #33334a; color: #ccc; }
+        body.dark-mode .jump-btn:hover { background: var(--color-secondary); border-color: var(--color-secondary); color: #fff; }
+        body.dark-mode .filter-bar { background: #13131e; border-color: #2a2a35; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        body.dark-mode .filter-search { background: #1c1c29; border-color: #33334a; }
+        body.dark-mode .filter-search input { color: #ddd; }
+        body.dark-mode .filter-search input::placeholder { color: #8b93ab; }
+        body.dark-mode .filter-btn { background: #1c1c29; border-color: #33334a; color: #ccc; }
+        body.dark-mode .filter-btn:hover { background: #242433; }
+        body.dark-mode .filter-btn.active { background: #334155; border-color: #475569; }
+        body.dark-mode .filter-empty { color: #8b93ab; }
+        body.dark-mode .filter-clear-btn:hover { color: #fff; }
+        body.dark-mode .section-label { color: #8b93ab; }
+        body.dark-mode .section-sep { border-top-color: #2a2a35; }
+        body.dark-mode .change-row { border-bottom-color: #1f1f2c; }
+        body.dark-mode .key-badge { background: #1c1c29; border-color: #33334a; color: #cbd5e1; }
+        body.dark-mode .bugfix-divider { border-top-color: #2a2a35; }
+        body.dark-mode .footer-note { color: #8b93ab; }
+        body.dark-mode .site-footer { background-color: #0c0c16; border-top-color: #2a2a35; }
+        body.dark-mode .back-button { background: linear-gradient(135deg, #ffda00, #ffc200); color: #000; }
+        body.dark-mode .discord-username { color: #ccc; }
+        body.dark-mode .discord-chevron { color: rgba(130,150,255,0.7); }
+        body.dark-mode .discord-user-pill:hover { border-color: rgba(130,150,255,0.5); }
+    </style>
+    <link rel="stylesheet" href="../shared/bulletin-lightbox.css">
+</head>
+<body>
+
+<!-- BG -->
+<div class="site-background">
+    <img src="../shared/bg.png" alt="">
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+    <div class="site-header__logo">
+        <img src="../BF_news.png" alt="BloxNews FR">
+    </div>
+    <nav>
+        <ul class="site-nav">
+            <li><a href="https://www.roblox.com/fr/games/2753915549/Blox-Fruits">Game</a></li>
+            <li><a href="../index.html">News</a></li>
+            <li><a href="../neo_bulletin.html">Leaks</a></li>
+            <li><a href="../archives.html">Archives</a></li>
+        </ul>
+    </nav>
+    <div class="site-header__icons">
+        <span class="material-symbols-outlined" onclick="openSearch()" title="Rechercher" role="button" tabindex="0" aria-label="Rechercher" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSearch()}">search</span>
+        <span class="material-symbols-outlined dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Dark Mode" role="button" tabindex="0" aria-label="Changer de thème" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDarkMode()}">dark_mode</span>
+        <div class="discord-skeleton" id="discordSkeleton"></div>
+        <button class="discord-login-btn" id="discordLoginBtn" onclick="_discordLogin()" style="display:none">
+            <svg width="16" height="12" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.44077 45.4204 0.52529C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.52529C25.5141 0.44359 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z" fill="white"/>
+            </svg>
+            Connexion
+        </button>
+        <div class="discord-user-pill" id="discordUserPill">
+            <img class="discord-avatar" id="discordAvatar" src="" alt="Avatar">
+            <span class="discord-username" id="discordUsername"></span>
+            <span class="discord-chevron">&#9660;</span>
+            <div class="discord-dropdown" id="discordDropdown">
+                <div class="discord-dropdown-header">
+                    <img class="discord-dropdown-avatar" id="discordDropdownAvatar" src="" alt="">
+                    <div>
+                        <div class="discord-dropdown-name" id="discordDropdownName"></div>
+                        <div class="discord-dropdown-tag" id="discordDropdownTag">Connect&#233; via Discord</div>
+                    </div>
+                </div>
+                <div class="discord-dropdown-body">
+                    <div class="discord-dropdown-item" onclick="_discordLogout()">
+                        <span>&#128682;</span> Se d&#233;connecter
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="material-symbols-outlined mobile-menu-btn" id="menuToggle" role="button" aria-label="Menu" aria-expanded="false">menu</span>
+    </div>
+</header>
+
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+<nav class="mobile-nav-dropdown" id="mobileNav" aria-hidden="true">
+    <div class="mnav-header">
+        <span class="mnav-header__title">Menu</span>
+        <button class="mnav-close" id="mobileNavClose" aria-label="Fermer"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div class="mnav-links">
+        <a href="https://www.roblox.com/fr/games/2753915549/Blox-Fruits" class="mnav-link"><span class="material-symbols-outlined mnav-link__icon">sports_esports</span> Jouer</a>
+        <a href="../index.html" class="mnav-link"><span class="material-symbols-outlined mnav-link__icon">newspaper</span> News</a>
+        <a href="../neo_bulletin.html" class="mnav-link"><span class="material-symbols-outlined mnav-link__icon">key</span> Leaks</a>
+        <a href="../archives.html" class="mnav-link"><span class="material-symbols-outlined mnav-link__icon">inventory_2</span> Archives</a>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<main class="bulletin-container">
+
+    <div class="blue-banner">The Balance Blog – Summer PvP Patch 001</div>
+
+    <!-- HERO IMAGE -->
+    <div class="hero-image-wrapper">
+        <img src="../pvp1/img/PvpChanges.png" alt="">
+    </div>
+
+    <div class="publish-date">6 Août 2026</div>
+
+    <div class="journal-header">
+        <h1 class="journal-title">Summer PvP Patch Notes</h1>
+        <p class="journal-subtitle">La plus grande mise à jour d'équilibrage PvP de tous les temps</p>
+        <div class="journal-meta">Balance Patch : 001 &nbsp;|&nbsp; 6 Août 2026</div>
+    </div>
+
+    <div class="dashed-line"></div>
+
+    <!-- INTRO -->
+    <div class="intro-box">
+        <h2>Une multitude de changements pour remodeler le PvP</h2>
+        <img src="../pvp1/img/FSMeeting.png" class="intro-img" alt="Réunion des développeurs – Summer PvP Patch">
+        <p>La <strong>2026 Summer Balance Update</strong> est le plus grand patch d'équilibrage jamais publié, avec plus de 100 changements sur les Fruits, les Fighting Styles, les Swords, les Guns, les Races et les mécaniques d'Instinct.</p>
+        <p>Certains builds familiers ont dominé le PvP depuis longtemps, tandis que d'autres outils ont peiné à trouver leur place. Cette mise à jour vise à bouleverser la meta en réduisant les options dominantes et en donnant aux Fruits, Armes et Fighting Styles sous-utilisés de meilleures hitboxes, des capacités plus rapides, de nouveaux outils utiles et, dans certains cas, <strong>un comportement complètement nouveau</strong>.</p>
+        <p>Tu risques de redécouvrir de vieux favoris, d'essayer des combinaisons inhabituelles et de repenser les builds sur lesquels tu comptais. Avec autant de changements en même temps, le PvP peut sembler un peu chaotique au début — c'est ce qui rend une mise à jour aussi grande excitante !</p>
+        <p><strong>L'équilibre continuera d'évoluer après la mise en ligne de ces changements.</strong> Des ajustements de valeurs, mécaniques et interactions pourront être faits après observation de la meta en conditions réelles.</p>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="overview-box" id="overview">
+        <div class="ov-eyebrow">Update Overview</div>
+        <div class="ov-title">Vue d'ensemble des changements</div>
+        <p class="ov-desc">Voici en un coup d'œil quels Fruits, Swords, Guns, Races, Fighting Styles et mécaniques ont été modifiés.</p>
+        <hr class="ov-divider">
+
+        <!-- BUFFS 26 -->
+        <div class="ov-section">
+            <div class="ov-section-head">
+                <div class="ov-section-title buff">▲ BUFFS</div>
+                <span class="ov-count buff">26</span>
+            </div>
+            <div class="ov-icons">
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Dark.png.webp" alt=""></div>Dark</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_DarkBlade.webp" alt=""></div>Dark Blade</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/FS_Bulletin_DeathStep.png.webp" alt=""></div>Death Step</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Dough.png.webp" alt=""></div>Dough</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/BF_Dragon_Hybrid.png.webp" alt=""></div>Dragon (H)</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Eagle.png.webp" alt=""></div>Eagle</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Fiend.png.webp" alt=""></div>Fiend</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Flame.png.webp" alt=""></div>Flame</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Gas.png.webp" alt=""></div>Gas</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Ghost.png.webp" alt=""></div>Ghost</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Ice.png.webp" alt=""></div>Ice</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Misc_Bulletin_Instinct.png.webp" alt=""></div>Instinct</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Gun_Bulletin_Kabucha.webp.jxl" alt=""></div>Kabucha</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Mammoth.png.webp" alt=""></div>Mammoth</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Phoenix.png.webp" alt=""></div>Phoenix</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_Pole_2ndForm.webp.jxl" alt=""></div>Pole V2</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Quake.png.webp" alt=""></div>Quake</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Sand.png.webp" alt=""></div>Sand</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/FS_Bulletin_SharkmanKarate.png.webp" alt=""></div>Sharkman K.</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Spider.png.webp" alt=""></div>Spider</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Tiger.png.webp" alt=""></div>Tiger</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_TwinHooks.webp" alt=""></div>Twin Hooks</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Gun_Bulletin_VenomBow.webp" alt=""></div>Venom Bow</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Werewolf.png.webp" alt=""></div>Werewolf</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Yeti.png.webp" alt=""></div>Yeti</div>
+                <div class="ov-item"><div class="ov-icon-slot buff"><img src="../pvp1/img/icons/Misc_Bulletin_Gun.png.webp" alt=""></div>Gun M1s</div>
+            </div>
+        </div>
+
+        <!-- NERFS 8 -->
+        <div class="ov-section">
+            <div class="ov-section-head">
+                <div class="ov-section-title nerf">▼ NERFS</div>
+                <span class="ov-count nerf">8</span>
+            </div>
+            <div class="ov-icons">
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Sword_Bulletin_Dragonheart.webp" alt=""></div>Dragonheart</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Empyrean.png.webp" alt=""></div>Empyrean Kitsune</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Ghoul_Bulletin.png.webp" alt=""></div>Ghoul v4</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Kitsune.png.webp" alt=""></div>Kitsune</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Lightning.png.webp" alt=""></div>Lightning</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/FS_Bulletin_SanguineArt.png.webp" alt=""></div>Sanguine</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Gun_Bulletin_SkullGuitar.webp" alt=""></div>Skull Guitar</div>
+                <div class="ov-item"><div class="ov-icon-slot nerf"><img src="../pvp1/img/icons/Sword_Bulletin_Yama.webp" alt=""></div>Yama</div>
+            </div>
+        </div>
+
+        <!-- ADJUSTED 5 -->
+        <div class="ov-section">
+            <div class="ov-section-head">
+                <div class="ov-section-title adj">↺ ADJUSTED</div>
+                <span class="ov-count adj">5</span>
+            </div>
+            <div class="ov-icons">
+                <div class="ov-item"><div class="ov-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Control.png.webp" alt=""></div>Control</div>
+                <div class="ov-item"><div class="ov-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Diamond.png.webp" alt=""></div>Diamond</div>
+                <div class="ov-item"><div class="ov-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Pain.png.webp" alt=""></div>Pain</div>
+                <div class="ov-item"><div class="ov-icon-slot adj"><img src="../pvp1/img/icons/Shark_Bulletin.png.webp" alt=""></div>Shark v4</div>
+                <div class="ov-item"><div class="ov-icon-slot adj"><img src="../pvp1/img/icons/Sword_Bulletin_TrueTripleKatana.webp" alt=""></div>True Triple Katana</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JUMP BAR -->
+    <div class="jump-bar">
+        <span class="jump-label">Aller à :</span>
+        <a class="jump-btn" href="#fruits">Fruits</a>
+        <a class="jump-btn" href="#fighting-styles">Fighting Styles</a>
+        <a class="jump-btn" href="#swords">Swords</a>
+        <a class="jump-btn" href="#guns">Guns</a>
+        <a class="jump-btn" href="#races">Races</a>
+        <a class="jump-btn" href="#systems">Systems</a>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <div class="filter-search">
+            <span class="material-symbols-outlined">search</span>
+            <input id="filterInput" type="text" placeholder="Rechercher un Fruit, Style, Épée, Gun, Race..." autocomplete="off">
+            <button class="filter-clear-btn" id="filterClearBtn" type="button" onclick="resetFilters()" aria-label="Effacer la recherche">&#10005;</button>
+        </div>
+        <div class="filter-btns">
+            <button class="filter-btn active" data-filter="all" type="button" onclick="setFilter(this)">All Changes</button>
+            <button class="filter-btn buff" data-filter="buff" type="button" onclick="setFilter(this)">Buffs</button>
+            <button class="filter-btn nerf" data-filter="nerf" type="button" onclick="setFilter(this)">Nerfs</button>
+            <button class="filter-btn adj" data-filter="adj" type="button" onclick="setFilter(this)">Adjusted</button>
+        </div>
+    </div>
+    <div class="filter-empty" id="filterEmpty">Aucun résultat ne correspond à ta recherche.</div>
+
+    <!-- ==================== FRUITS ==================== -->
+    <div class="cat-header" id="fruits" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_Fruit.png.webp" alt=""></div>
+        <div class="cat-header-title">Fruits</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Control.png.webp" alt=""></div>
+            <div class="item-name">Control</div>
+            <span class="item-badge adj"><span class="badge-dot"></span>Adjusted</span>
+        </div>
+        <div class="section-label">Outside Domain</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Cooldown augmenté de 4 secondes ; hitbox réduite de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Cooldown augmenté de 4 secondes.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">End-lag augmenté de 0,25 seconde en cas de touche.</div></div>
+        </div>
+        <hr class="section-sep">
+        <div class="section-label">Dagger Mode</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">M1</div><div class="change-desc">Dégâts augmentés de 350% ; cooldown augmenté de 250%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag augmenté de 0,25 seconde ; portée réduite de 10% ; hitbox réduite de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">End-lag augmenté de 0,5 seconde ; portée réduite de 10% ; hitbox réduite de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Dark.png.webp" alt=""></div>
+            <div class="item-name">Dark</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Ne se stun plus soi-même ; portée augmentée de 25% ; hitbox augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Brise maintenant l'Instinct ; end-lag réduit de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Hitbox augmentée de 15%. Lorsqu'il est maintenu pleinement, la durée du stun du dernier coup augmente de 50%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Temps de lancement réduit de 25% ; end-lag réduit de 25% ; vitesse de déplacement augmentée de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Diamond.png.webp" alt=""></div>
+            <div class="item-name">Diamond</div>
+            <span class="item-badge adj"><span class="badge-dot"></span>Adjusted</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">M1</div><div class="change-desc">Ne brise plus l'Instinct ; cooldown réduit de 20%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Ajoute un stun de 1 seconde.</div></div>
+            <div class="change-row"><div class="key-badge">ALL</div><div class="change-desc">Tous les dégâts réduits de 10%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Dough.png.webp" alt=""></div>
+            <div class="item-name">Dough</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z · TAP</div><div class="change-desc">Hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">Z · HOLD</div><div class="change-desc">Vitesse de déplacement augmentée de 20% ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag en cas de touche réduit de 20% ; hitbox augmentée de 20% sur les deux variantes.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Hitbox augmentée de 25% ; durée du stun augmentée de 40%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Durée maximale de maintien passée de 3 à 4 secondes ; temps de lancement réduit de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/BF_Dragon_Hybrid.png.webp" alt=""></div>
+            <div class="item-name">Dragon (Hybrid)</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Hybrid</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Brise maintenant l'Instinct ; hitbox augmentée de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Eagle.png.webp" alt=""></div>
+            <div class="item-name">Eagle</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">End-lag réduit de 20%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Wind-up réduit de 45% ; vitesse de déplacement augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Hitbox augmentée de 20% ; durée du stun augmentée de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Vitesse de vol augmentée de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">FLIGHT</div><div class="change-desc">La jauge se vide plus vite si une arme à feu ou une épée est équipée en vol.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Empyrean.png.webp" alt=""></div>
+            <div class="item-name">Empyrean Kitsune</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="section-label">Non transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z · TAP</div><div class="change-desc">Ne brise plus l'Instinct.</div></div>
+            <div class="change-row"><div class="key-badge">Z · HOLD</div><div class="change-desc">Dégâts réduits de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Se canalise désormais au toucher ; l'utilisateur ne peut pas lancer d'autre capacité avant la fin de l'animation.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">End-lag augmenté de 0,3 seconde.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Fiend.png.webp" alt=""></div>
+            <div class="item-name">Fiend</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z · TAP</div><div class="change-desc">Wind-up réduit de 20% ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">Z · HOLD</div><div class="change-desc">Temps de lancement réduit à 0,75 seconde.</div></div>
+            <div class="change-row"><div class="key-badge">X · HOLD</div><div class="change-desc">Temps de lancement réduit de 20% ; portée augmentée ; hitbox augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">End-lag réduit de 60%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">ALL</div><div class="change-desc">Tous les dégâts augmentés de 17%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Flame.png.webp" alt=""></div>
+            <div class="item-name">Flame</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Vitesse de déplacement augmentée de 40%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Temps de lancement réduit de 30% ; vitesse de déplacement augmentée de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Cooldown réduit de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Gas.png.webp" alt=""></div>
+            <div class="item-name">Gas</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Dégâts augmentés de 30% ; temps de chargement réduit de 30%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Ghost.png.webp" alt=""></div>
+            <div class="item-name">Ghost</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Temps de lancement réduit de 50% ; durée du stun augmentée de 1 à 1,2 seconde.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Portée augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Knockback réduit de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc"><strong>Nouveau :</strong> Les fantômes invoqués reçoivent une mise à niveau majeure et peuvent maintenant reproduire les capacités des épées.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Temps de lancement réduit de 50%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Ice.png.webp" alt=""></div>
+            <div class="item-name">Ice</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Brise maintenant l'Instinct ; hitbox augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Vitesse de déplacement augmentée de 60%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Utilisable dans les airs.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Kitsune.png.webp" alt=""></div>
+            <div class="item-name">Kitsune</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="section-label">Non transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z · TAP</div><div class="change-desc">Ne brise plus l'Instinct ; désormais esquivable par l'Instinct.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Se canalise désormais au toucher ; l'utilisateur ne peut pas lancer d'autre capacité avant la fin de l'animation.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">End-lag augmenté de 0,3 seconde.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Bulletin_Fruit_Lightning.png.webp" alt=""></div>
+            <div class="item-name">Lightning</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">V · TAP</div><div class="change-desc">Hitbox réduite de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">V · HOLD</div><div class="change-desc">Hitbox gagnée en chargeant réduite de 25%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Mammoth.png.webp" alt=""></div>
+            <div class="item-name">Mammoth</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">ALL</div><div class="change-desc">Tous les dégâts augmentés de 10%.</div></div>
+        </div>
+        <hr class="section-sep">
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">DASH</div><div class="change-desc">Distance du dash augmentée de 10%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot adj"><img src="../pvp1/img/icons/Bulletin_Fruit_Pain.png.webp" alt=""></div>
+            <div class="item-name">Pain</div>
+            <span class="item-badge adj"><span class="badge-dot"></span>Adjusted</span>
+        </div>
+        <div class="section-label">Last Stand</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">PASSIVE</div><div class="change-desc">Last Stand maintient l'utilisateur en combat le temps qu'il est actif. La vie se réinitialise au maximum et se vide progressivement ; la guérison est désactivée. Éliminer un joueur adverse désactive Last Stand et remet le compteur à 0 — les PNJ ne comptent pas.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Phoenix.png.webp" alt=""></div>
+            <div class="item-name">Phoenix</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé · Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">M1</div><div class="change-desc">Dégâts augmentés de 20% ; hitbox augmentée de 20% ; hitbox d'explosion augmentée de 20%.</div></div>
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Dégâts augmentés de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Coût en énergie réduit de 40%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Quake.png.webp" alt=""></div>
+            <div class="item-name">Quake</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Dégâts augmentés de 20% ; end-lag réduit de 70%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Dégâts augmentés de 40% ; wind-up réduit de 30% ; end-lag réduit de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Dégâts augmentés de 40% ; wind-up réduit de 30% ; end-lag réduit de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Dégâts augmentés de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Sand.png.webp" alt=""></div>
+            <div class="item-name">Sand</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag en cas de touche réduit de 40%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">End-lag réduit de 60% ; hitbox augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Force du vortex augmentée de 100%, attirant les ennemis bien plus vers le centre ; temps de lancement réduit de 50%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Vitesse de vol augmentée de 25%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Spider.png.webp" alt=""></div>
+            <div class="item-name">Spider</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Éveillé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Dégâts augmentés de 50% ; portée augmentée de 20% ; hitbox augmentée de 60%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Hitbox augmentée de 30% ; durée du stun augmentée de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Tiger.png.webp" alt=""></div>
+            <div class="item-name">Tiger</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Wind-up réduit de 20% ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">C · TAP</div><div class="change-desc">Vitesse de déplacement augmentée de 20% ; hitbox augmentée de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">C · HOLD</div><div class="change-desc">Temps de lancement réduit à 0,75 seconde ; portée augmentée.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Désormais esquivable avec l'Instinct ; vitesse de déplacement augmentée de 10%.</div></div>
+        </div>
+        <hr class="section-sep">
+        <div class="section-label">Blazing Form</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Soigne 30% de la vie maximale en entrant en Blazing Form.</div></div>
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Dégâts augmentés de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Vitesse de déplacement augmentée de 50%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Dégâts augmentés de 10% ; vitesse de déplacement augmentée de 15% ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Brise maintenant l'Instinct ; wind-up réduit de 30%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Werewolf.png.webp" alt=""></div>
+            <div class="item-name">Werewolf</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">PASSIVE</div><div class="change-desc">Lifesteal : soigne 3% de tous les dégâts infligés.</div></div>
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Dégâts du dernier coup augmentés de 30% ; hitbox augmentée de 5%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Wind-up réduit de 20% ; hitbox augmentée de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">C · TAP</div><div class="change-desc">Vitesse de déplacement augmentée de 20% ; hitbox augmentée de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">C · HOLD</div><div class="change-desc">Temps de lancement réduit à 0,75 seconde ; hitbox augmentée de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Désormais esquivable avec l'Instinct ; cooldown réduit de 15% ; vitesse de déplacement augmentée de 10%.</div></div>
+        </div>
+        <hr class="section-sep">
+        <div class="section-label">Blazing Form</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">PASSIVE</div><div class="change-desc">Lifesteal : soigne 3% de tous les dégâts infligés.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Soigne 30% de la vie maximale lors de l'infection par la rage.</div></div>
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Knockback réduit de 30%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Vitesse de déplacement augmentée de 20%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Dégâts augmentés de 20% ; vitesse de déplacement augmentée de 15% ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Wind-up réduit de 30%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Bulletin_Fruit_Yeti.png.webp" alt=""></div>
+            <div class="item-name">Yeti</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">Transformé</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">F</div><div class="change-desc">Hitbox augmentée de 10%.</div></div>
+            <div class="change-row"><div class="key-badge">ALL</div><div class="change-desc">Tous les dégâts augmentés de 10%.</div></div>
+        </div>
+    </div>
+
+    <!-- ==================== FIGHTING STYLES ==================== -->
+    <div class="cat-header" id="fighting-styles" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_FS.png.webp" alt=""></div>
+        <div class="cat-header-title">Fighting Styles</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/FS_Bulletin_DeathStep.png.webp" alt=""></div>
+            <div class="item-name">Death Step</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Portée augmentée de 50% ; hitbox augmentée de 50%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Portée augmentée de 20% ; hitbox augmentée de 20%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Dégâts par seconde augmentés de 20% ; end-lag réduit de 0,25 à 0,1 seconde ; hitbox augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">V</div><div class="change-desc">Cooldown réduit de 50% ; durée réduite de 50%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/FS_Bulletin_SanguineArt.png.webp" alt=""></div>
+            <div class="item-name">Sanguine</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc">Portée réduite de 15% ; hitbox réduite de 10%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/FS_Bulletin_SharkmanKarate.png.webp" alt=""></div>
+            <div class="item-name">Sharkman Karate</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Ne projette plus l'adversaire dans les airs ; vitesse des orbes augmentée de 25%.</div></div>
+            <div class="change-row"><div class="key-badge">C</div><div class="change-desc"><strong>Nouveau :</strong> Accorde maintenant une santé temporaire basée sur les dégâts absorbés. N'est plus esquivable par l'Instinct ; la prise ne peut plus être annulée par les dégâts entrants ; réduction des dégâts augmentée pendant la prise ; durée maximale de maintien de 1,5 seconde.</div></div>
+        </div>
+    </div>
+
+    <!-- ==================== SWORDS ==================== -->
+    <div class="cat-header" id="swords" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_Sword.png.webp" alt=""></div>
+        <div class="cat-header-title">Swords</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_DarkBlade.webp" alt=""></div>
+            <div class="item-name">Dark Blade</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Vitesse de chargement maintenu augmentée de 10% ; end-lag réduit de 30% ; portée augmentée de 10% ; hitbox augmentée de 10%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Sword_Bulletin_Dragonheart.webp" alt=""></div>
+            <div class="item-name">Dragonheart</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Drain d'Instinct réduit de 50% pour les premiers coups.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_Pole_2ndForm.webp.jxl" alt=""></div>
+            <div class="item-name">Pole V2</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Hitbox augmentée de 35%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag réduit de 0,3 à 0,15 seconde ; portée augmentée de 20% ; hitbox augmentée de 20%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot adj"><img src="../pvp1/img/icons/Sword_Bulletin_TrueTripleKatana.webp" alt=""></div>
+            <div class="item-name">True Triple Katana</div>
+            <span class="item-badge adj"><span class="badge-dot"></span>Adjusted</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag augmenté de 0,5 seconde ; vitesse de déplacement augmentée de 25%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Sword_Bulletin_TwinHooks.webp" alt=""></div>
+            <div class="item-name">Twin Hooks</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">La zone d'atterrissage de l'ennemi est désormais plus prévisible.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Sword_Bulletin_Yama.webp" alt=""></div>
+            <div class="item-name">Yama</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Ne brise plus l'Instinct ; ne draine l'Instinct que tant que la cible reste dans la hitbox.</div></div>
+        </div>
+    </div>
+
+    <!-- ==================== GUNS ==================== -->
+    <div class="cat-header" id="guns" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_Gun.png.webp" alt=""></div>
+        <div class="cat-header-title">Guns</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Gun_Bulletin_Kabucha.webp.jxl" alt=""></div>
+            <div class="item-name">Kabucha</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Applique maintenant un stun de 0,5 seconde au lieu d'un knockup.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">End-lag réduit de 0,4 à 0,2 seconde.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Gun_Bulletin_SkullGuitar.webp" alt=""></div>
+            <div class="item-name">Skull Guitar</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">FIX</div><div class="change-desc">Exploit de mouvement atténué.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Hitbox réduite de 15%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Gun_Bulletin_VenomBow.webp" alt=""></div>
+            <div class="item-name">Venom Bow</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">Z</div><div class="change-desc">Portée augmentée de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">X</div><div class="change-desc">Applique désormais un stun de 1 seconde même en cas d'esquive par l'Instinct.</div></div>
+        </div>
+    </div>
+
+    <!-- ==================== RACES ==================== -->
+    <div class="cat-header" id="races" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_Race.png.webp" alt=""></div>
+        <div class="cat-header-title">Races</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot nerf"><img src="../pvp1/img/icons/Ghoul_Bulletin.png.webp" alt=""></div>
+            <div class="item-name">Ghoul v4</div>
+            <span class="item-badge nerf"><span class="badge-dot"></span>Nerfed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">1 GEAR</div><div class="change-desc">Lifesteal réduit de 27% à 20%.</div></div>
+            <div class="change-row"><div class="key-badge">2 GEAR</div><div class="change-desc">Lifesteal réduit de 37% à 30%.</div></div>
+            <div class="change-row"><div class="key-badge">CROWS</div><div class="change-desc">Les corbeaux drainent maintenant l'Instinct au lieu de le briser instantanément.</div></div>
+            <div class="change-row"><div class="key-badge">DAMAGE</div><div class="change-desc">Dégâts des corbeaux réduits de 10%.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot adj"><img src="../pvp1/img/icons/Shark_Bulletin.png.webp" alt=""></div>
+            <div class="item-name">Shark v4</div>
+            <span class="item-badge adj"><span class="badge-dot"></span>Adjusted</span>
+        </div>
+        <div class="section-label">V3</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">COOLDOWN</div><div class="change-desc">Cooldown augmenté de 15%.</div></div>
+            <div class="change-row"><div class="key-badge">DURATION</div><div class="change-desc">Durée augmentée de 4,5 à 5 secondes.</div></div>
+        </div>
+        <hr class="section-sep">
+        <div class="section-label">V4</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">SHIELD</div><div class="change-desc">Le bouclier amélioré peut désormais absorber jusqu'à 60% de la vie maximale.</div></div>
+            <div class="change-row"><div class="key-badge">DAMAGE</div><div class="change-desc">Les ennemis touchés par le tourbillon subissent 20% de dégâts en moins.</div></div>
+        </div>
+    </div>
+
+    <!-- ==================== SYSTEMS ==================== -->
+    <div class="cat-header" id="systems" onclick="toggleCategory(this)" role="button" tabindex="0" aria-expanded="true" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCategory(this)}">
+        <div class="cat-icon-slot"><img src="../pvp1/img/icons/Misc_Bulletin_System.png.webp" alt=""></div>
+        <div class="cat-header-title">Systems</div>
+        <span class="cat-toggle material-symbols-outlined">expand_more</span>
+    </div>
+
+    <div class="item-card">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Misc_Bulletin_Gun.png.webp" alt=""></div>
+            <div class="item-name">Gun M1s</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="section-label">System Change</div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">M1</div><div class="change-desc">Toutes les attaques M1 des armes à feu ont désormais l'Aim Assist.</div></div>
+        </div>
+    </div>
+
+    <div class="item-card last">
+        <div class="item-header">
+            <div class="item-icon-slot buff"><img src="../pvp1/img/icons/Misc_Bulletin_Instinct.png.webp" alt=""></div>
+            <div class="item-name">Instinct</div>
+            <span class="item-badge buff"><span class="badge-dot"></span>Buffed</span>
+        </div>
+        <div class="change-list">
+            <div class="change-row"><div class="key-badge">DODGES</div><div class="change-desc">Temps de régénération des esquives réduit de 40 à 30 secondes, permettant de récupérer les esquives d'Instinct 25% plus vite.</div></div>
+        </div>
+    </div>
+
+    <!-- BUG FIXES -->
+    <div class="bugfix-box" id="bugfixes">
+        <div class="bugfix-header">
+            <div class="bugfix-icon"><img src="../pvp1/img/icons/Misc_Bulletin_BugFix.png.webp" alt=""></div>
+            <div class="bugfix-title">Bug Fixes</div>
+        </div>
+        <hr class="bugfix-divider">
+        <div class="change-list">
+            <div class="change-row">
+                <div class="key-badge" style="min-width:80px;font-size:10px;line-height:1.3;">TAB BOOST MOVEMENT EXPLOIT</div>
+                <div class="change-desc">Corrigé pour Dragon Talon, Diamond, Electric Claw et Sanguine. L'exploit permettait aux joueurs de se déplacer beaucoup plus loin que prévu lorsqu'il était déclenché.</div>
+            </div>
+            <div class="change-row">
+                <div class="key-badge" style="min-width:80px;font-size:10px;line-height:1.3;">FLASH STEP INSTANT COMBO EXPLOIT</div>
+                <div class="change-desc">Corrigé. L'exploit permettait à certains joueurs d'enchaîner instantanément des coups après le Flash Step.</div>
+            </div>
+        </div>
+    </div>
+
+    <p class="footer-note">Nous continuerons à surveiller l'évolution de la nouvelle meta et à effectuer les ajustements d'équilibrage nécessaires au fil du temps.</p>
+
+    <div class="social-share">
+        <a href="https://discord.gg/a6S6eugPn" class="td">
+            <img src="../shared/discord.png" alt="Discord"> Discord
+        </a>
+        <a href="https://tiktok.com/@dc_neolixx" class="tt">
+            <img src="../shared/tiktok.png" alt="TikTok"> TikTok
+        </a>
+        <a href="https://www.youtube.com/@Dc_neolixx" class="ty">
+            <img src="../shared/youtube.png" alt="YouTube"> YouTube
+        </a>
+    </div>
+
+    <div class="back-button-container">
+        <a href="../index.html" class="back-button">← Retour aux Actualités</a>
+    </div>
+
+</main>
+
+    <div id="searchOverlay" class="search-overlay" onclick="if(event.target===this)closeSearch()">
+        <div class="search-container">
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon" style="font-size:22px;color:#999;flex-shrink:0">search</span>
+                <input id="searchInput" type="text" placeholder="Rechercher&#8230;" autofocus onkeydown="if(event.key==='Escape')closeSearch();if(event.key==='Enter'){event.preventDefault();executeSearch()}">
+                <button class="search-go-btn" onclick="executeSearch()">Chercher</button>
+                <button class="search-nav-btn" onclick="prevMatch()" id="searchPrevBtn">&#9650;</button>
+                <button class="search-nav-btn" onclick="nextMatch()" id="searchNextBtn">&#9660;</button>
+                <button class="search-close-btn" onclick="closeSearch()">&#10005;</button>
+            </div>
+            <div id="searchStats" class="search-stats"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ─── SEARCH SYSTEM ── */
+        let searchMatches = [];
+        let searchCurrent = -1;
+        function openSearch() {
+            document.getElementById('searchOverlay').classList.add('is-active');
+            const inp = document.getElementById('searchInput');
+            inp.value = '';
+            document.getElementById('searchStats').textContent = '';
+            searchMatches = []; searchCurrent = -1;
+            removeHighlights();
+            setTimeout(() => inp.focus(), 200);
+        }
+        function closeSearch(keepHl) {
+            document.getElementById('searchOverlay').classList.remove('is-active');
+            if (!keepHl) removeHighlights();
+            if (!keepHl) { searchMatches = []; searchCurrent = -1; }
+        }
+        function removeHighlights() {
+            document.querySelectorAll('mark.search-hl').forEach(m => {
+                const p = m.parentNode;
+                p.replaceChild(document.createTextNode(m.textContent), m);
+                p.normalize();
+            });
+        }
+        function executeSearch() {
+            const q = document.getElementById('searchInput').value.trim().toLowerCase();
+            removeHighlights();
+            searchMatches = []; searchCurrent = -1;
+            document.getElementById('searchPrevBtn').disabled = true;
+            document.getElementById('searchNextBtn').disabled = true;
+            const stats = document.getElementById('searchStats');
+            stats.textContent = '';
+            if (!q) return;
+            const root = document.querySelector('.main-content') || document.body;
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                acceptNode: n => {
+                    const p = n.parentNode;
+                    if (!p || p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE') return NodeFilter.FILTER_REJECT;
+                    if (p.closest('.search-overlay, .material-symbols-outlined, .mobile-menu-btn')) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            const nodes = []; let n;
+            while (n = walker.nextNode()) nodes.push(n);
+            nodes.forEach(textNode => {
+                const text = textNode.textContent;
+                const lower = text.toLowerCase();
+                let idx = lower.indexOf(q);
+                if (idx === -1) return;
+                const frag = document.createDocumentFragment();
+                let last = 0;
+                while (idx !== -1) {
+                    if (idx > last) frag.appendChild(document.createTextNode(text.slice(last, idx)));
+                    const mark = document.createElement('mark');
+                    mark.className = 'search-hl';
+                    mark.textContent = text.slice(idx, idx + q.length);
+                    frag.appendChild(mark);
+                    searchMatches.push(mark);
+                    last = idx + q.length;
+                    idx = lower.indexOf(q, last);
+                }
+                if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+                textNode.parentNode.replaceChild(frag, textNode);
+            });
+            const c = searchMatches.length;
+            if (c > 0) {
+                searchCurrent = 0;
+                searchMatches[0].classList.add('active');
+                searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                stats.textContent = c + ' r\u00e9sultat' + (c > 1 ? 's' : '');
+                document.getElementById('searchPrevBtn').disabled = false;
+                document.getElementById('searchNextBtn').disabled = false;
+                closeSearch(true);
+            } else {
+                stats.textContent = 'Aucun r\u00e9sultat';
+            }
+        }
+        function nextMatch() {
+            if (searchMatches.length === 0) return;
+            searchMatches[searchCurrent]?.classList.remove('active');
+            searchCurrent = (searchCurrent + 1) % searchMatches.length;
+            searchMatches[searchCurrent].classList.add('active');
+            searchMatches[searchCurrent].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('searchStats').textContent = (searchCurrent+1) + '/' + searchMatches.length;
+        }
+        function prevMatch() {
+            if (searchMatches.length === 0) return;
+            searchMatches[searchCurrent]?.classList.remove('active');
+            searchCurrent = (searchCurrent - 1 + searchMatches.length) % searchMatches.length;
+            searchMatches[searchCurrent].classList.add('active');
+            searchMatches[searchCurrent].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('searchStats').textContent = (searchCurrent+1) + '/' + searchMatches.length;
+        }
+
+        /* ─── FILTER SYSTEM ── */
+        let activeFilter = 'all';
+        function applyFilters() {
+            const q = document.getElementById('filterInput').value.trim().toLowerCase();
+            document.getElementById('filterClearBtn').classList.toggle('is-visible', q.length > 0);
+            let visible = 0;
+            document.querySelectorAll('.item-card').forEach(card => {
+                const badge = card.querySelector('.item-badge');
+                const matchType = activeFilter === 'all' || (badge && badge.classList.contains(activeFilter));
+                const name = card.querySelector('.item-name');
+                const matchQuery = !q || (name && name.textContent.toLowerCase().includes(q));
+                const show = matchType && matchQuery;
+                card.classList.toggle('is-hidden', !show);
+                if (show) visible++;
+            });
+            document.querySelectorAll('.cat-header').forEach(header => {
+                let next = header.nextElementSibling;
+                while (next && next.classList.contains('is-hidden')) next = next.nextElementSibling;
+                header.classList.toggle('is-hidden', !(next && next.classList.contains('item-card')));
+            });
+            fixLastCards();
+            document.getElementById('filterEmpty').classList.toggle('is-visible', visible === 0);
+        }
+        function fixLastCards() {
+            document.querySelectorAll('.item-card.last').forEach(card => card.classList.remove('last'));
+            document.querySelectorAll('.item-card:not(.is-hidden):not(.is-collapsed-card)').forEach(card => {
+                let next = card.nextElementSibling;
+                while (next && (next.classList.contains('is-hidden') || next.classList.contains('is-collapsed-card'))) next = next.nextElementSibling;
+                if (!next || !next.classList.contains('item-card')) card.classList.add('last');
+            });
+        }
+        function toggleCategory(header) {
+            const collapsed = header.classList.toggle('is-collapsed');
+            header.setAttribute('aria-expanded', String(!collapsed));
+            let next = header.nextElementSibling;
+            while (next && next.classList.contains('item-card')) {
+                next.classList.toggle('is-collapsed-card', collapsed);
+                next = next.nextElementSibling;
+            }
+            fixLastCards();
+        }
+        function setFilter(btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.getAttribute('data-filter');
+            applyFilters();
+        }
+        function resetFilters() {
+            document.getElementById('filterInput').value = '';
+            activeFilter = 'all';
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+            applyFilters();
+        }
+        document.getElementById('filterInput').addEventListener('input', applyFilters);
+
+        /* ─── DARK MODE ── */
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('blox_dark_mode', document.body.classList.contains('dark-mode'));
+            document.getElementById('darkModeToggle').textContent = document.body.classList.contains('dark-mode') ? 'light_mode' : 'dark_mode';
+        }
+        (function() {
+            if (localStorage.getItem('blox_dark_mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                var el = document.getElementById('darkModeToggle');
+                if (el) el.textContent = 'light_mode';
+            }
+        })();
+
+        /* ─── DISCORD AUTH ── */
+        const DISCORD_CLIENT_ID   = '1517793695573999646';
+        const DISCORD_REDIRECT_URI = window.location.href.split('#')[0].split('?')[0];
+        const DISCORD_SCOPE        = 'identify';
+        const DISCORD_TOKEN_KEY    = 'bloxbulletin_discord_token';
+        const DISCORD_USER_KEY     = 'bloxbulletin_discord_user';
+
+        function _discordLogin() {
+            const params = new URLSearchParams({
+                client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT_URI,
+                response_type: 'token', scope: DISCORD_SCOPE,
+            });
+            window.location.href = 'https://discord.com/api/oauth2/authorize?' + params.toString();
+        }
+        async function _discordFetchUser(token) {
+            const res = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: 'Bearer ' + token } });
+            if (!res.ok) throw new Error('Token invalide');
+            return res.json();
+        }
+        function _discordAvatarUrl(user) {
+            if (user.avatar) return 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.webp?size=80';
+            const idx = user.discriminator !== '0' ? parseInt(user.discriminator) % 5 : (parseInt(user.id) >> 22) % 6;
+            return 'https://cdn.discordapp.com/embed/avatars/' + idx + '.png';
+        }
+        function _discordShowUser(user) {
+            const avatarUrl = _discordAvatarUrl(user);
+            const displayName = user.global_name || user.username;
+            document.getElementById('discordLoginBtn').style.display = 'none';
+            document.getElementById('discordSkeleton').classList.remove('is-visible');
+            const pill = document.getElementById('discordUserPill');
+            document.getElementById('discordAvatar').src = avatarUrl;
+            document.getElementById('discordAvatar').onerror = function() { this.src = ''; };
+            document.getElementById('discordUsername').textContent = displayName;
+            pill.classList.add('is-visible');
+            document.getElementById('discordDropdownAvatar').src = avatarUrl;
+            document.getElementById('discordDropdownName').textContent = displayName;
+            document.getElementById('discordDropdownTag').textContent = '@' + user.username;
+            pill.onclick = function(e) { e.stopPropagation(); pill.classList.toggle('dropdown-open'); };
+            document.addEventListener('click', function() { pill.classList.remove('dropdown-open'); });
+        }
+        function _discordLogout() {
+            localStorage.removeItem(DISCORD_TOKEN_KEY);
+            localStorage.removeItem(DISCORD_USER_KEY);
+            document.getElementById('discordUserPill').classList.remove('is-visible', 'dropdown-open');
+            document.getElementById('discordLoginBtn').style.display = '';
+        }
+        (async function() {
+            var skeleton = document.getElementById('discordSkeleton');
+            var loginBtn = document.getElementById('discordLoginBtn');
+            var pill = document.getElementById('discordUserPill');
+            var hash = window.location.hash;
+            if (hash.includes('access_token=')) {
+                var params = new URLSearchParams(hash.slice(1));
+                var token = params.get('access_token');
+                var expiresIn = parseInt(params.get('expires_in') || '604800');
+                var expiresAt = Date.now() + expiresIn * 1000;
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+                if (token) {
+                    skeleton.classList.add('is-visible');
+                    try {
+                        var user = await _discordFetchUser(token);
+                        localStorage.setItem(DISCORD_TOKEN_KEY, JSON.stringify({ token: token, expiresAt: expiresAt }));
+                        localStorage.setItem(DISCORD_USER_KEY, JSON.stringify(user));
+                        _discordShowUser(user);
+                    } catch(e) { skeleton.classList.remove('is-visible'); loginBtn.style.display = ''; }
+                    return;
+                }
+            }
+            try {
+                var stored = JSON.parse(localStorage.getItem(DISCORD_TOKEN_KEY) || 'null');
+                var cachedUser = JSON.parse(localStorage.getItem(DISCORD_USER_KEY) || 'null');
+                if (cachedUser) {
+                    _discordShowUser(cachedUser);
+                    if (stored && stored.expiresAt > Date.now()) {
+                        try {
+                            var freshUser = await _discordFetchUser(stored.token);
+                            localStorage.setItem(DISCORD_USER_KEY, JSON.stringify(freshUser));
+                            _discordShowUser(freshUser);
+                        } catch(e) {}
+                    }
+                    return;
+                }
+            } catch(e) {}
+            loginBtn.style.display = '';
+        })();
+
+        /* ─── MOBILE NAV ── */
+        (function() {
+            const menuBtn = document.getElementById('menuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            const closeBtn = document.getElementById('mobileNavClose');
+            function open() {
+                mobileNav.classList.add('is-open'); backdrop.classList.add('is-open');
+                mobileNav.setAttribute('aria-hidden', 'false');
+                menuBtn.textContent = 'close'; menuBtn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+            function close() {
+                mobileNav.classList.remove('is-open'); backdrop.classList.remove('is-open');
+                mobileNav.setAttribute('aria-hidden', 'true');
+                menuBtn.textContent = 'menu'; menuBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+            menuBtn.addEventListener('click', () => mobileNav.classList.contains('is-open') ? close() : open());
+            backdrop.addEventListener('click', close);
+            closeBtn.addEventListener('click', close);
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+            mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+        })();
+    </script>
+
+    <script src="../shared/bulletin-lightbox.js"></script>
+</body>
+</html>
